@@ -5,5 +5,5 @@ const page = () => {
     <div className='text-center'>Hello World</div>
   )
 }
-
+ 
 export default page
