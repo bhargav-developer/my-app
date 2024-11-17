@@ -15,9 +15,7 @@ const signUp = () => {
     if(!user.userName || !user.email || !user.password){
       alert("Fill the form")
     }
-    else{
-      console.log("o")
-    }
+   
   }
 
 
