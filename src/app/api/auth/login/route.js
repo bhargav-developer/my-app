@@ -1,10 +1,13 @@
-import { connect } from "@/src/dbConfig/dbConfig.js";
-import User from "@/src/models/userModel.js";
+
 import { NextRequest, NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import { sign } from "jsonwebtoken";
+import { connect } from '../../../../dbConfig/dbConfig';
+import { User } from '../../../../models/userModel';
 
-connect();
+connect()
+
+
 
 export const POST = async (req) => {
     try {

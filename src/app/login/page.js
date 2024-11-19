@@ -15,7 +15,7 @@ const page = () => {
    try {
     const res = await axios.post("api/auth/login",user);
     if(res.status === 200){
-      router("/profile")
+      router.push("/profile")
     }
     
    } catch (error) {
