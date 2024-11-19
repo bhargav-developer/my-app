@@ -1,0 +1,44 @@
+import { connect } from "@/src/dbConfig/dbConfig.js";
+import User from "@/src/models/userModel.js";
+import { NextRequest, NextResponse } from 'next/server';
+import bcryptjs from 'bcryptjs';
+import { sign } from "jsonwebtoken";
+
+connect();
+
+export const POST = async (req) => {
+    try {
+        const reqBody = await req.json()
+        const { email, password } = reqBody
+        const user = await User.findOne({ email });
+        if (!user) {
+            return NextResponse.json({ error: "user does not exist" }, { status: 400 })
+
+        }
+        const checkPassword = await bcryptjs.compare(password, user.password);
+
+        if (!checkPassword) {
+            return NextResponse.json({ message: "Wrong password" }, { status: 400 })
+        }
+        const tokenData = {
+            id: user._id,
+            username: user.username,
+            email: user.email
+        }
+        const token = sign(tokenData, process.env.SECRET_KEY, { expiresIn: "2h" })
+        const res = NextResponse.json({
+            message: "login successfull"
+        }, { status: 200 });
+        res.cookies.set("token", token, {
+            httpOnly: true
+        })
+        return res;
+
+
+
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+}
