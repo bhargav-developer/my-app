@@ -15,8 +15,7 @@ export const POST = async (req) => {
         const { email, password } = reqBody
         const user = await User.findOne({ email });
         if (!user) {
-            return NextResponse.json({ error: "user does not exist" }, { status: 400 })
-
+            return NextResponse.json({ message: "user does not exist" }, { status: 404 })
         }
         const checkPassword = await bcryptjs.compare(password, user.password);
 

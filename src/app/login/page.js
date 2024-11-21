@@ -17,9 +17,12 @@ const page = () => {
     if(res.status === 200){
       router.push("/profile")
     }
+
     
    } catch (error) {
-    console.log(error)
+    if(error.status === 404){
+      alert("incorrect combination email and password")
+    }
    }
   }
   return (
