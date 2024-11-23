@@ -1,16 +1,16 @@
 import mongoose from "mongoose"
 const userSchema = mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true,
         unique: true,
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true,
-    },  
-    password:{
+    },
+    password: {
         type: String,
         required: true,
     },
@@ -18,12 +18,12 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-   forgotPasswordToken: String,
+    forgotPasswordToken: String,
     forgotPasswordTokenExp: Date,
     verifyToken: String,
-    verifyTokenExp: Date, 
+    verifyTokenExp: Date,
 
 })
 
-export const User = mongoose.models.users || mongoose.model("users",userSchema)
+export const User = mongoose.models.users || mongoose.model("users", userSchema)
 

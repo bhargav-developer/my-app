@@ -19,7 +19,7 @@ const signUp = () => {
       setLoading(true);
       const res = await axios.post("/api/auth/signup",user);
       if(res.status === 200){
-        router.push("/login")
+        router.push("/about")
       }
 
     } catch (error) {
@@ -52,8 +52,8 @@ const signUp = () => {
           <h1 className='text-center text-2xl' >Sign Up</h1>
           <div className='flex flex-col items-center gap-6 mt-5 p-4'>
             <input type="text" value={user.userName} onChange={(e) => setUser({ ...user, userName: e.target.value })} className='p-2 border border-slate-200 rounded-md' placeholder='Enter your username' />
-            <input type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className='p-2 border border-slate-200 rounded-md' placeholder='Enter your email' />
-            <input type="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} className='p-2 border border-slate-200 rounded-md' placeholder='Enter your password' />
+            <input type="email" required value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className='p-2 border border-slate-200 rounded-md' placeholder='Enter your email' />
+            <input type="password" required value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} className='p-2 border border-slate-200 rounded-md' placeholder='Enter your password' />
             {
               btn ?
                 <button className='text-xl w-20 transition-all ease-in-out duration-200 hover:w-full bg-[#ff004f] rounded-md p-2 text-white' onClick={handleSignUp}>Submit</button>

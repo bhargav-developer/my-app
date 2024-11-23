@@ -1,13 +1,9 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import { sign } from "jsonwebtoken";
 import { connect } from '../../../../dbConfig/dbConfig';
 import { User } from '../../../../models/userModel';
-
 connect()
-
-
 
 export const POST = async (req) => {
     try {

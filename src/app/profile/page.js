@@ -5,17 +5,17 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const Profile = () => {
   const router = useRouter()
-  const [userInfo,setUserInfo] = useState(false)
+  const [userInfo, setUserInfo] = useState(false)
 
-useEffect(()=>{
-  const getUserInfo = async () =>{
-    const res = await axios.get("/api/auth/me");
-    if(res.status === 200){
-      setUserInfo(res.data)
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const res = await axios.get("/api/auth/me");
+      if (res.status === 200) {
+        setUserInfo(res.data)
+      }
     }
-  }
-  getUserInfo()
-},[])
+    getUserInfo()
+  }, [])
 
   const logOut = async () => {
     try {
@@ -31,12 +31,12 @@ useEffect(()=>{
   return (
     <div>
       <h1 className='text-center' >Profile</h1>
-<h2>Username: {userInfo.username}</h2>
-<h2>Email: {userInfo.email}</h2>
-
+      <h2>Username: {userInfo.username}</h2>
+      <h2>Email: {userInfo.email}</h2>
       <hr />
-
-      <button onClick={logOut} >Log out</button>
+  
+      <button onClick={logOut} className='bg-red-400 rounded-xl p-3 text-white' >Log out</button>
+        
     </div>
   )
 }
