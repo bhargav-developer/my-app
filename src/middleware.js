@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
  
-// This function can be marked `async` if using `await` inside
-export function middleware(req) {
- const path = req.nextUrl.pathname;
+
+export async function middleware(req) {
+ const path = await req.nextUrl.pathname;
  const publicPaths = path === "/login" || path === "/signup"
- const token = req.cookies.get("token")?.value || "";
+ const token = await req.cookies.get("token")?.value || "";
  if(publicPaths && token){
     return NextResponse.redirect(new URL('/', req.url))
  }
@@ -15,7 +15,6 @@ export function middleware(req) {
 
 }
  
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: [
     '/',

@@ -23,6 +23,9 @@ const page = () => {
     if(error.status === 404){
       alert("incorrect combination email and password")
     }
+    if(error.status === 401){
+      router.push("/verifyemail")
+    }
    }
   }
   return (

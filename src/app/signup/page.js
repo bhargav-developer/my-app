@@ -19,7 +19,7 @@ const signUp = () => {
       setLoading(true);
       const res = await axios.post("/api/auth/signup",user);
       if(res.status === 200){
-        router.push("/about")
+        router.push("/verifyemail")
       }
 
     } catch (error) {

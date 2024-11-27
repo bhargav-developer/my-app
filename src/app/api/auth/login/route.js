@@ -18,19 +18,30 @@ export const POST = async (req) => {
         if (!checkPassword) {
             return NextResponse.json({ message: "Wrong password" }, { status: 400 })
         }
+        const isVerified = user.isVerified
         const tokenData = {
             id: user._id,
             username: user.username,
             email: user.email
         }
         const token = sign(tokenData, process.env.SECRET_KEY, { expiresIn: "2h" })
-        const res = NextResponse.json({
-            message: "login successfull"
-        }, { status: 200 });
-        res.cookies.set("token", token, {
-            httpOnly: true
-        })
-        return res;
+        console.log(isVerified,user)
+        const res = 
+            NextResponse.json({
+                message: "login successfull"
+            }, { status: 200 });
+            res.cookies.set("token", token, {
+                httpOnly: true
+            })
+ if(isVerified){
+     return res;
+ }
+ else{
+    return NextResponse.json({
+        message: "login successfull"
+    }, { status: 401 });
+ }
+        
 
 
 
