@@ -25,23 +25,22 @@ export const POST = async (req) => {
             email: user.email
         }
         const token = sign(tokenData, process.env.SECRET_KEY, { expiresIn: "2h" })
-        console.log(isVerified,user)
-        const res = 
+        const res =
             NextResponse.json({
                 message: "login successfull"
             }, { status: 200 });
-            res.cookies.set("token", token, {
-                httpOnly: true
-            })
- if(isVerified){
-     return res;
- }
- else{
-    return NextResponse.json({
-        message: "login successfull"
-    }, { status: 401 });
- }
-        
+        res.cookies.set("token", token, {
+            httpOnly: true
+        })
+        if (isVerified) {
+            return res;
+        }
+        else {
+            return NextResponse.json({
+                message: "login successfull"
+            }, { status: 401 });
+        }
+
 
 
 

@@ -11,10 +11,7 @@ export const sendEmail = async ({ email, emailType, userId }) => {
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             throw new Error('Invalid userId');
         }
-        const verificationCode = function num(){
-            return Math.floor(Math.random() * 9)
-        }
-
+     
         const hasedToken = await hash(`${userId}`, 10)
         if (emailType === "VERIFY-USER") {
             await User.findByIdAndUpdate(userId, {
@@ -42,7 +39,6 @@ export const sendEmail = async ({ email, emailType, userId }) => {
             to: `${email}`,
             subject: "Verify Your Email",
             html: `<p>Click here to <a href="${process.env.DOMAIN}/verifyemail?token=${hasedToken}">Verify</a></p>
-            <h1>${verificationCode()}</h1>
             `
         }
 
