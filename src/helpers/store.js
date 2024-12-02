@@ -1,8 +1,10 @@
 import {create} from 'zustand';
 
 const useStore = create((set) => ({
-    userInfo: {}, // initial state
-    setUserInfo: (userInfo) => set({ userInfo }) // method to update state
+    userInfo: {},
+    setUserInfo: (userInfo) => set({ userInfo }) ,
+    products: [],
+    setProducts: (products) => set({ products }) 
 }));
 
 export default useStore;
