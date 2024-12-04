@@ -1,6 +1,7 @@
+"use client"
 import React from 'react'
 
-const userProfile = ({params}) => {
+const userProfile =  ({params}) => {
   return (
     <div>Hello {params.id}</div>
   )

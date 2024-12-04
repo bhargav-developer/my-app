@@ -1,50 +1,91 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import useStore from '@/src/helpers/store'
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-const Catalogue = () => {
-  const {products,setProducts} = useStore();
-  useEffect(() => {
-  const getAllProducts = async () => {
+const Catalogue = ({}) => {
+  const [allProducts, setAllProducts] = useState([]);
+  const { products, setProducts } = useStore();
+  const {category, setCategory} = useStore();
+  const [sort, setSort] = useState(undefined);
+  const router = useRouter();
+
+
+  const getAllproducts = async () => {
     const res = await axios.get("/api/products/getAllproducts");
-    if(res.status === 200){
-      setProducts(res.data.Products)
-      console.log(res.data.Products,products)
+    if (res.status === 200) {
+      setAllProducts(res.data.Products);
+      setProducts(res.data.Products);
     }
   }
-  getAllProducts()
+
+  useEffect(() => {
+    getAllproducts()
   }, [])
+
+
+  useEffect(() => {
+    filterProducts()
+  }, [category])
+
+  useEffect(() => {
+    sortProducts()
+  }, [sort])
+
+
+  const sortProducts = () => {
+    if(sort === "L-H"){
+      setProducts([]);  
+    }
   
+  }
+
+
+  const redirectPage = async (id) => {
+    router.push(`/catalogue/${id}`)
+  }
+
+  const filterProducts = () => {
+    if (category === 'All') {
+      setProducts(allProducts);  
+    } else {
+      const filteredProducts = allProducts.filter((product) => product.category === category);
+      setProducts(filteredProducts);
+    }
+  }
+
   return (
     <>
       <Header />
       <div className='px-16 m-5 mt-5'>
-        <div className='text-3xl font-bold px-1 py-4 text-center'>Top-Selling Products</div>
+        <div className='text-3xl font-bold px-1 py-4 text-center'>Top-Selling Products <span className='text-gray-500'>{products.length}</span></div>
         <div className='flex justify-between mt-3 px-1 py-4'>
           <div className='flex gap-4'>
             <span>Filter: </span>
-            {/* <select name="Price" id="" defaultValue="price">
+            <select name="Price" id="" defaultValue="price">
               <option value="price" className='hidden' disabled>Price</option>
               <option value="">$5</option>
               <option value="">$10</option>
               <option value="">$15</option>
             </select>
-            <select name="Category" className='active:outline-none' defaultValue="Category">
+            <select name="Category" className='active:outline-none' onChange={(e) => setCategory(e.target.value)} defaultValue="Category">
               <option value="Category" className='hidden' disabled >Category</option>
+              <option value="All">All</option>
               <option value="Men">Men</option>
               <option value="Women">Women</option>
               <option value="Kids">Kids</option>
-            </select> */}
+            </select>
           </div>
           <div>
             <span>Sort: </span>
-            {/* <select name="Category" className='active:outline-none' id="">
-              <option value="" selected>Best-selling</option>
-              <option value="Men">Price, Low-High</option>
-              <option value="Women">Price, High-Low</option>
-            </select> */}
+            <select name="Category" onChange={(e) => setSort(e.target.value)} className='active:outline-none'>
+              <option value="B-S" >Best-selling</option>
+              <option value="L-H">Price, Low-High</option>
+              <option value="H-L">Price, High-Low</option>
+            </select>
+
           </div>
         </div>
         <div>
@@ -53,20 +94,19 @@ const Catalogue = () => {
               <div className="flex flex-wrap -m-4">
                 {
                   products.map((e) => {
-                    console.log(e)
-                   return <div key={e._id} className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                    <a className="block relative h-48 rounded overflow-hidden">
-                      <img alt="ecommerce" className="object-cover hover:scale-125 transition-all duration-300 object-center w-full h-full block" src={e.imageLink} />
-                    </a>
-                    <div className="mt-4">
-                      <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{e.category}</h3>
-                      <h2 className="text-gray-900 title-font text-lg font-medium">{e.name}</h2>
-                      <p className="mt-1">${e.price}</p>
+                    return <div key={e._id} onClick={() => redirectPage(e._id)} className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                      <a className="block relative h-48 rounded overflow-hidden">
+                        <img alt="ecommerce" className="object-cover hover:scale-125 transition-all duration-300 object-center w-full h-full block" src={e.imageLink} />
+                      </a>
+                      <div className="mt-4">
+                        <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{e.category}</h3>
+                        <h2 className="text-gray-900 title-font text-lg font-medium">{e.name}</h2>
+                        <p className="mt-1">${e.price}</p>
+                      </div>
                     </div>
-                  </div>
                   })
                 }
-             
+
               </div>
             </div>
           </section>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Header from "./Components/Header";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
           </p>
           <div>
             <button className="bg-black py-3 px-6 rounded-sm text-white border-2 hover:text-black hover:bg-white hover:border-black  hover:duration-300 transition-all">
-              Shop Now
+              <Link href={"/catalogue"}> Shop Now</Link>
             </button>
 
           </div>

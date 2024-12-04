@@ -3,9 +3,22 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { CiShoppingCart } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
+import axios from 'axios';
 
 const Header = () => {
     const [profileDropdown, setProfileDropdown] = useState(false)
+    const logOut = async () => {
+        try {
+          const res = await axios.get("/api/auth/logout");
+          if (res.data.success) {
+            router.push("/login")
+          }
+          console.log(userInfo)
+        } catch (error) {
+          console.log(error.message)
+        }
+    
+      }
     return (
         <>
             <div>
@@ -33,7 +46,7 @@ const Header = () => {
                                     <div className='bg-slate-200 rounded-sm flex flex-col p-2 absolute mt-2'>
                                         <span   className='text-base'>Profile</span>
                                         <hr />
-                                        <span className='text-base'>Logout</span>
+                                        <span className='text-base cursor-pointer' onClick={logOut} >Logout</span>
                                     </div>
                                 </div>
                             }

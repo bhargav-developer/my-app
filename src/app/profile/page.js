@@ -28,10 +28,10 @@ const Profile = () => {
 
   const logOut = async () => {
     try {
-      // const res = await axios.get("/api/auth/logout");
-      // if (res.data.success) {
-      //   router.push("/login")
-      // }
+      const res = await axios.get("/api/auth/logout");
+      if (res.data.success) {
+        router.push("/login")
+      }
       console.log(userInfo)
     } catch (error) {
       console.log(error.message)
