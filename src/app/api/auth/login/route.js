@@ -24,7 +24,7 @@ export const POST = async (req) => {
             username: user.username,
             email: user.email
         }
-        const token = sign(tokenData, process.env.SECRET_KEY, { expiresIn: "2h" })
+        const token = sign(tokenData, process.env.SECRET_KEY, { expiresIn: "12h" })
         const res =
             NextResponse.json({
                 message: "login successfull"

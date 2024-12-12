@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const VerifyEmail = () => {
 
     const [token, setToken] = useState("")
-    const [inputs, setInputs] = useState(["", "", "", ""]);
     const router = useRouter();
 
     const verifyEmail = async () => {
@@ -14,7 +13,7 @@ const VerifyEmail = () => {
             const res = await axios.post("api/auth/verifyEmail", { token })
             console.log(res)
             if (res.status === 200) {
-                router.push("/profile")
+                router.push("/")
             }
 
         } catch (error) {
@@ -24,20 +23,7 @@ const VerifyEmail = () => {
         }
     }
 
-    const handleChange = (e, index) => {
-        const value = e.target.value;
-
-        if (/^\d$/.test(value) || value === "") {
-            const newInputs = [...inputs];
-            newInputs[index] = value;
-            setInputs(newInputs);
-    
-            if (value && index < inputs.length - 1) {
-                document.getElementById(`input-${index + 1}`).focus();
-            }
-        }
-
-    }
+   
 
 
     useEffect(() => {

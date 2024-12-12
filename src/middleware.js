@@ -23,6 +23,7 @@ export const config = {
     '/signup',
     '/profile/:path*',
      '/catalogue',
-    '/catalogue/:path*'
+    '/catalogue/:path*',
+    '/cart'
   ],
 }

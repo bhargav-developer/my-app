@@ -2,15 +2,16 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import useStore from '@/src/helpers/store'
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { useRouter } from 'next/navigation';
 
-const Catalogue = ({}) => {
+const Catalogue = ({ }) => {
   const [allProducts, setAllProducts] = useState([]);
-  const { products, setProducts } = useStore();
-  const {category, setCategory} = useStore();
+  const [products, setProducts] = useState([]);
+  const {category, setCategory } = useStore();
   const [sort, setSort] = useState(undefined);
   const router = useRouter();
+
 
 
   const getAllproducts = async () => {
@@ -19,10 +20,16 @@ const Catalogue = ({}) => {
       setAllProducts(res.data.Products);
       setProducts(res.data.Products);
     }
+
+
   }
 
   useEffect(() => {
-    getAllproducts()
+     getAllproducts()
+    if (!category) {
+      setCategory("All")
+    }
+
   }, [])
 
 
@@ -35,11 +42,21 @@ const Catalogue = ({}) => {
   }, [sort])
 
 
-  const sortProducts = () => {
-    if(sort === "L-H"){
-      setProducts([]);  
+  const sortProducts = async () => {
+    if (sort === "L-H") {
+      products.sort((a, b) => a.price - b.price);
+      setProducts(products)
     }
-  
+    if (sort === "H-L") {
+      products.sort((a, b) => b.price - a.price);
+      setProducts(products)
+    }
+    if (sort === "B-S") {
+      setProducts(allProducts)
+      filterProducts()
+    }
+
+
   }
 
 
@@ -49,7 +66,7 @@ const Catalogue = ({}) => {
 
   const filterProducts = () => {
     if (category === 'All') {
-      setProducts(allProducts);  
+      setProducts(allProducts);
     } else {
       const filteredProducts = allProducts.filter((product) => product.category === category);
       setProducts(filteredProducts);
@@ -70,7 +87,7 @@ const Catalogue = ({}) => {
               <option value="">$10</option>
               <option value="">$15</option>
             </select>
-            <select name="Category" className='active:outline-none' onChange={(e) => setCategory(e.target.value)} defaultValue="Category">
+            <select name="Category" className='active:outline-none' onChange={(e) => setCategory(e.target.value)} defaultValue={category}>
               <option value="Category" className='hidden' disabled >Category</option>
               <option value="All">All</option>
               <option value="Men">Men</option>

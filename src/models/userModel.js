@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -22,6 +23,13 @@ const userSchema = new mongoose.Schema({
     forgotPasswordTokenExp: Date,
     verifyToken: String,
     verifyTokenExp: Date,
+    cart: {
+        type: [{ productId: String, quantity: Number }],
+    },
+    fav: {
+        type: [{ id: String, quantity: Number }],
+        required: false,
+    }
 
 })
 

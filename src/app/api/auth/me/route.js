@@ -7,10 +7,9 @@ connect()
 export async function GET(req) {
 
     try {
-        const user = await getDataFromToken(req)
+        const user =  getDataFromToken(req)
         const userInfo = await User.findById(user.id).select("-password");
         return NextResponse.json(userInfo)
-
 
     } catch (error) {
         if (error.message === "jwt expired") {
@@ -18,7 +17,7 @@ export async function GET(req) {
             res.cookies.set("token","",{expires: Date.now()})
             return res
         }
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
 }

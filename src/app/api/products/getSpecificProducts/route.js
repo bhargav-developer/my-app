@@ -1,4 +1,4 @@
-import { Product } from "@/src/models/productModel";
+import { Product } from "@/src/models/productModel.js";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -7,7 +7,7 @@ export const POST = async (req) => {
         const reqBody = await req.json()
         const { id } = reqBody;
         const ProductId = new mongoose.Types.ObjectId(id)
-        const product = await Product.find({ _id: ProductId });
+        const product = await Product.findById(ProductId);
         if (product) {
             return NextResponse.json({ product }, { status: 200 })
         }

@@ -1,9 +1,16 @@
+"use client"
 import Image from "next/image";
 import Header from "./Components/Header";
 import Link from "next/link";
+import useStore from "../helpers/store";
+import { useEffect } from "react";
+import axios from "axios";
 
 
 export default function Home() {
+
+  const { setCategory  } = useStore();
+  
   return (
     <>
       <Header />
@@ -16,9 +23,9 @@ export default function Home() {
             Explore a wide range of fashion  handpicked to <br /> match your unique style
           </p>
           <div>
-            <button className="bg-black py-3 px-6 rounded-sm text-white border-2 hover:text-black hover:bg-white hover:border-black  hover:duration-300 transition-all">
-              <Link href={"/catalogue"}> Shop Now</Link>
-            </button>
+          
+              <Link href={"/catalogue"} onClick={() => setCategory("Men")} className="bg-black py-3 px-6 rounded-sm text-white border-transparent border-2 hover:text-black hover:bg-white hover:border-black  hover:duration-300 transition-all" > Shop Now</Link>
+      
 
           </div>
         </div>
