@@ -8,6 +8,7 @@ const page = () => {
     const { userInfo, setUserInfo } = useStore();  
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
+    const salesTax = 9.18
 
 
     const fetchProducts = async () => {
@@ -29,12 +30,10 @@ const page = () => {
         }
     };
 
-    // Update the total amount
     useEffect(() => {
         fetchProducts();
     }, [userInfo]);
 
-    // Recalculate total when products or cart changes
     useEffect(() => {
         let newTotal = 0;
         products.forEach((product) => {
@@ -43,7 +42,7 @@ const page = () => {
                 newTotal += product.price * cartItem.quantity;
             }
         });
-        newTotal += 9; // Add sales tax (adjust logic as needed)
+        newTotal += salesTax; 
         setTotal(newTotal);
     }, [products, userInfo.cart]);
 
@@ -54,11 +53,11 @@ const page = () => {
             const updatedCart = [...userInfo.cart];
             const existingItem = updatedCart.find(item => item.productId === id);
             if (existingItem) {
-                existingItem.quantity += 1; // Increase quantity
+                existingItem.quantity += 1; 
             } else {
-                updatedCart.push({ productId: id, quantity: 1 }); // Add new item if not in cart
+                updatedCart.push({ productId: id, quantity: 1 }); 
             }
-            setUserInfo({ ...userInfo, cart: updatedCart });  // Update the cart in the store
+            setUserInfo({ ...userInfo, cart: updatedCart }); 
         }
     };
 
@@ -81,10 +80,10 @@ const page = () => {
     return (
         <>
             <Header />
-            <div className="flex mt-5">
+            <div className="flex mt-5 p-5 px-16">
                 {products.length > 0 ? (
                     <div className="flex w-full">
-                        <div className="basis-[70%] px-6">
+                        <div className="basis-[70%]">
                             {products.map((product) => {
                                 const cartItem = userInfo.cart
                                     ? userInfo.cart.find((item) => item.productId === product._id)
@@ -92,7 +91,7 @@ const page = () => {
                                 const quantity = cartItem ? cartItem.quantity : 0;
 
                                 return (
-                                    <div key={product._id} className="flex px-28 m-7">
+                                    <div key={product._id} className="flex m-7">
                                         <div>
                                             <img src={product.imageLink} width={250} alt={product.name} />
                                         </div>
@@ -124,7 +123,7 @@ const page = () => {
                             })}
                         </div>
                         <div>
-                            <div className="bg-[#f2f2f2] p-7 m-7 flex flex-col gap-3">
+                            <div className="bg-[#f2f2f2] p-7  flex flex-col gap-3">
                                 {products.length > 0 &&
                                     products.map((product) => {
                                         const cartItem = userInfo.cart
@@ -133,9 +132,8 @@ const page = () => {
                                         const quantity = cartItem ? cartItem.quantity : 0;
                                         const totalPrice = product.price * quantity;
                                         return (
-                                            <div key={product._id} className="flex justify-between gap-9 text-xl">
-                                                <h2>{product.name}</h2>
-                                                <h2>{quantity > 1 && `x ${quantity}`}</h2>
+                                            <div key={product._id} className="flex justify-between gap-12 text-xl">
+                                                <h2>{product.name} <span className="text-sm text-gray-600"> {quantity > 1 && `x ${quantity}`} </span></h2>
                                                 <h2>$ {totalPrice}</h2>
                                             </div>
                                         );
@@ -143,7 +141,7 @@ const page = () => {
                                 <hr />
                                 <div className="flex justify-between gap-9 text-xl">
                                     <h2>Sales Tax</h2>
-                                    <h2>$9</h2>
+                                    <h2>${salesTax}</h2>
                                 </div>
                                 <hr />
                                 <div className="flex justify-between gap-9 text-2xl">

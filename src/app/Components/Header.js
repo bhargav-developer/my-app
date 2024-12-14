@@ -51,7 +51,7 @@ const Header = () => {
                         <ul className='flex gap-7'>
                             <Link href={"/"}>Home</Link>
                             <Link href={"/catalogue"}>Catalogue</Link>
-                            <li className='cursor-pointer '>Store </li>
+                            <Link href={"/fav"}>favorites</Link>
                         </ul>
                     </div>
                     <div className='flex gap-7 items-center justify-center'>

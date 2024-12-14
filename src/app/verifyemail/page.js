@@ -11,7 +11,6 @@ const VerifyEmail = () => {
     const verifyEmail = async () => {
         try {
             const res = await axios.post("api/auth/verifyEmail", { token })
-            console.log(res)
             if (res.status === 200) {
                 router.push("/")
             }
@@ -23,7 +22,7 @@ const VerifyEmail = () => {
         }
     }
 
-   
+
 
 
     useEffect(() => {
@@ -45,10 +44,11 @@ const VerifyEmail = () => {
     return (
         <div className="h-[100vh] flex justify-center items-center">
             <div className=" bg-slate-600 rounded-md p-5">
-                <h1 className="text-center mt-3 text-2xl">Verify Your Email Is verified</h1>
+                <h1 className="text-center mt-3 text-2xl">{token ? "Your Email Is verified" : "A Verification link has been sent to your Email"}</h1>
             </div>
         </div>
     );
 };
 
 export default VerifyEmail;
+   

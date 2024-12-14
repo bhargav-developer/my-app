@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
         type: [{ productId: String, quantity: Number }],
     },
     fav: {
-        type: [{ id: String, quantity: Number }],
+        type: [{ id: String }],
         required: false,
     }
 

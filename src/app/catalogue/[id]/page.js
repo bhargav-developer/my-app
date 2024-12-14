@@ -1,37 +1,25 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Header'
-import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import useStore from '@/src/helpers/store.js';
 import axios from 'axios';
 
 const page = ({ params }) => {
 
-    const { product, setProduct, userInfo, setUserInfo } = useStore()
+    const { userInfo } = useStore()
+    const [ product, setProduct] = useState([])
     const [loading, setLoading] = useState(false)
     const [quantity, setQuantity] = useState(undefined)
+    const [fav, setFav] = useState(false)
 
-
-    useEffect(() => {
+    const getProduct = async () => {
         try {
-
-            const getProduct = async () => {
-                const { id } = await params
-                const res = await axios.post("/api/products/getSpecificProducts", { id })
-                if (res.status === 200) {
-                    setProduct(res.data.product)
-                }
+            const { id } = await params
+            const res = await axios.post("/api/products/getSpecificProducts", { id })
+            if (res.status === 200) {
+                setProduct(res.data.product)
             }
-            getProduct()
-            if (userInfo.cart) {
-                const cartItem = userInfo.cart.find(item => item.productId === product._id);
-                if (cartItem) {
-                  setQuantity(cartItem.quantity);
-                }
-                else{
-                    setQuantity(0)
-                }
-              }
         } catch (error) {
             console.log(error)
         }
@@ -39,24 +27,61 @@ const page = ({ params }) => {
             setLoading(true)
         }
 
+    }
+
+
+    useEffect(() => {
+
+        getProduct()
+        console.log(userInfo)
+        if (userInfo.cart) {
+            const cartItem = userInfo.cart.find(item => item.productId === product._id);
+            if (cartItem) {
+                setQuantity(cartItem.quantity);
+            }
+            else {
+                setQuantity(0)
+            }
+        }
+        if (userInfo.fav) {
+            const isFav = userInfo.fav.find(item => item.id === product._id);
+            if (isFav) {
+                setFav(true)
+            }
+            else {
+                setFav(false)
+            }
+
+        }
+
     }, [userInfo])
 
     const addToCart = async () => {
         const res = await axios.post("/api/products/addToCart", { productId: product._id });
-        if(res.status === 200){
-            if(quantity === 0){
-                userInfo.cart.push({productId: product._id,quantity: 1})
+        if (res.status === 200) {
+            if (quantity === 0) {
+                userInfo.cart.push({ productId: product._id, quantity: 1 })
                 console.log(userInfo.cart)
             }
             setQuantity(quantity + 1)
         }
     }
 
+    const addToFav = async () => {
+        const res = await axios.post("/api/products/addToFav", { productId: product._id });
+        if (res.status === 200) {
+            setFav(!fav)
+        }
+    }
+
     const removeFromCart = async () => {
         const res = await axios.post("/api/products/removeFromCart", { productId: product._id });
-        if(res.status === 200){
+        if (res.status === 200) {
+            if (quantity === 1) {
+                userInfo.cart.pop({ productId: product._id })
+                console.log(userInfo.cart)
+            }
             setQuantity(quantity - 1)
-            
         }
     }
 
@@ -87,7 +112,10 @@ const page = ({ params }) => {
 
                         }
 
-                        <button className='p-4 px-5 bg-[#f0eee6] rounded-md '><MdFavoriteBorder /></button>
+                        <button className='p-4 px-5 bg-[#f0eee6] rounded-md text-2xl ' onClick={addToFav}> {
+                            fav ? <MdFavorite className='text-red-600 ' /> : <MdFavoriteBorder />
+                        }
+                        </button>
                     </div>
                 </div>
             </div>
